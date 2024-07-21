@@ -68,3 +68,9 @@ vectorstore = PineconeVectorStore.from_texts(
     embedding=embedding,
     namespace=namespace,
 )
+
+query = "People who are well rested do better on what?"
+
+similar_docs = vectorstore.similarity_search(query)
+
+print(similar_docs[0])
