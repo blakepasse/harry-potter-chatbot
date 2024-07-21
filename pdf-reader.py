@@ -41,11 +41,23 @@ from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 import glob
+from dotenv import load_dotenv
 
 loader = TextLoader('/Users/bpasse/Desktop/virtual-tests/project/converted/extracted_text.txt')
 
 docs = loader.load()
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
 docs = text_splitter.split_documents(docs)
 
-print(docs)
+for doc in docs:
+    print(f"{doc}")
+    print("\n\n")
+
+load_dotenv()
+
+oapi = os.getenv("OPENAI_API_KEY")
+papi = os.getenv("PINECONE_API_KEY")
+
+os.environ['OPENAI_API_KEY'] = oapi
+os.environ['PINECONE_API_KEY'] = papi
+
