@@ -37,27 +37,34 @@
 import magic
 from langchain_pinecone import PineconeVectorStore
 from langchain_openai import OpenAIEmbeddings
-from langchain_community.document_loaders import TextLoader
+from langchain_community.document_loaders import TextLoader, DirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 import glob
 from dotenv import load_dotenv
+load_dotenv()
+oapi = os.getenv("OPENAI_API_KEY")
+papi = os.getenv("PINECONE_API_KEY")
+os.environ['OPENAI_API_KEY'] = oapi
+os.environ['PINECONE_API_KEY'] = papi
 
 loader = TextLoader('/Users/bpasse/Desktop/virtual-tests/project/converted/extracted_text.txt')
 
 docs = loader.load()
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
-docs = text_splitter.split_documents(docs)
+split_docs = text_splitter.split_documents(docs)
 
-for doc in docs:
-    print(f"{doc}")
-    print("\n\n")
+split_docs_strings = [doc.page_content for doc in split_docs]
 
-load_dotenv()
+embedding = OpenAIEmbeddings(
+    model = "text-embedding-3-small",
+)
 
-oapi = os.getenv("OPENAI_API_KEY")
-papi = os.getenv("PINECONE_API_KEY")
-
-os.environ['OPENAI_API_KEY'] = oapi
-os.environ['PINECONE_API_KEY'] = papi
-
+index_name = "vid-chatbot"
+namespace = "new"
+vectorstore = PineconeVectorStore.from_texts(
+    texts=split_docs_strings,
+    index_name=index_name,
+    embedding=embedding,
+    namespace=namespace,
+)
