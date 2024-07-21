@@ -36,7 +36,7 @@
 
 import magic
 from langchain_pinecone import PineconeVectorStore
-from langchain_openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.document_loaders import TextLoader, DirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
@@ -74,3 +74,18 @@ query = "People who are well rested do better on what?"
 similar_docs = vectorstore.similarity_search(query)
 
 print(similar_docs[0])
+
+llm = ChatOpenAI(
+    model="gpt-4o",
+    temperature=0
+)
+
+from langchain.chains import RetrievalQA
+
+qa = RetrievalQA.from_chain_type(
+    llm=llm,
+    chain_type="stuff",
+    retriever=vectorstore.as_retriever()
+)
+
+print(qa.invoke(query))
