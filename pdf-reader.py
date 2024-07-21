@@ -1,38 +1,51 @@
-import os
-from pypdf import PdfReader
+# import os
+# from pypdf import PdfReader
 
-# Extract text from pdfs
-pdf_path = "/Users/bpasse/Desktop/virtual-tests/project/documents/sample-newspaper.pdf"
+# # Extract text from pdfs
+# pdf_path = "/Users/bpasse/Desktop/virtual-tests/project/documents/sample-newspaper.pdf"
 
-output_dir = "/Users/bpasse/Desktop/virtual-tests/project/converted"
-output_file = "extracted_text.txt"
+# output_dir = "/Users/bpasse/Desktop/virtual-tests/project/converted"
+# output_file = "extracted_text.txt"
 
-output_path = os.path.join(output_dir, output_file)
+# output_path = os.path.join(output_dir, output_file)
 
-reader = PdfReader(pdf_path)
-extracted_text = ""
-for page in reader.pages:
-    extracted_text += page.extract_text()
+# reader = PdfReader(pdf_path)
+# extracted_text = ""
+# for page in reader.pages:
+#     extracted_text += page.extract_text()
 
-with open(output_path, "w") as text_file:
-    text_file.write(extracted_text)
+# with open(output_path, "w") as text_file:
+#     text_file.write(extracted_text)
 
 
-with open("/Users/bpasse/Desktop/virtual-tests/project/converted/extracted_text.txt") as f:
-    text = f.read()
+# with open("/Users/bpasse/Desktop/virtual-tests/project/converted/extracted_text.txt") as f:
+#     text = f.read()
 
-# Chunk text
+# from langchain_openai import ChatOpenAI
+# from dotenv import load_dotenv
+
+# load_dotenv()
+
+
+# oapi = os.getenv("OPENAI_API_KEY")
+
+# chat = ChatOpenAI(
+#     openai_api_key=oapi,
+#     model='gpt-3.5-turbo'
+# )
+
+import magic
+from langchain_pinecone import PineconeVectorStore
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+import os
+import glob
 
-text_splitter = RecursiveCharacterTextSplitter(
-    # Set a really small chunk size, just to show.
-    chunk_size=200,
-    chunk_overlap=50,
-    length_function=len,
-    is_separator_regex=False,
-)
+loader = TextLoader('/Users/bpasse/Desktop/virtual-tests/project/converted/extracted_text.txt')
 
-texts = text_splitter.create_documents([text])
+docs = loader.load()
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+docs = text_splitter.split_documents(docs)
 
-# Embed chunks in pinecone
-# Use chatbot
+print(docs)
