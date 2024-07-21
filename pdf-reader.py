@@ -20,4 +20,19 @@ for page in reader.pages:
 with open(output_path, "w") as text_file:
     text_file.write(extracted_text)
 
-print(f"Text extracted and saved to {output_path}")
+
+# This is a long document we can split up.
+with open("/Users/bpasse/Desktop/virtual-tests/project/converted/extracted_text.txt") as f:
+    text = f.read()
+
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+text_splitter = RecursiveCharacterTextSplitter(
+    # Set a really small chunk size, just to show.
+    chunk_size=200,
+    chunk_overlap=50,
+    length_function=len,
+    is_separator_regex=False,
+)
+
+texts = text_splitter.create_documents([text])
