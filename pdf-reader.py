@@ -1,39 +1,3 @@
-# import os
-# from pypdf import PdfReader
-
-# # Extract text from pdfs
-# pdf_path = "/Users/bpasse/Desktop/virtual-tests/project/documents/sample-newspaper.pdf"
-
-# output_dir = "/Users/bpasse/Desktop/virtual-tests/project/converted"
-# output_file = "extracted_text.txt"
-
-# output_path = os.path.join(output_dir, output_file)
-
-# reader = PdfReader(pdf_path)
-# extracted_text = ""
-# for page in reader.pages:
-#     extracted_text += page.extract_text()
-
-# with open(output_path, "w") as text_file:
-#     text_file.write(extracted_text)
-
-
-# with open("/Users/bpasse/Desktop/virtual-tests/project/converted/extracted_text.txt") as f:
-#     text = f.read()
-
-# from langchain_openai import ChatOpenAI
-# from dotenv import load_dotenv
-
-# load_dotenv()
-
-
-# oapi = os.getenv("OPENAI_API_KEY")
-
-# chat = ChatOpenAI(
-#     openai_api_key=oapi,
-#     model='gpt-3.5-turbo'
-# )
-
 import magic
 from langchain_pinecone import PineconeVectorStore
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
@@ -42,6 +6,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 import glob
 from dotenv import load_dotenv
+from flask import Flask, request, render_template, jsonify
+app = Flask(__name__)
+
 load_dotenv()
 oapi = os.getenv("OPENAI_API_KEY")
 papi = os.getenv("PINECONE_API_KEY")
@@ -89,3 +56,18 @@ qa = RetrievalQA.from_chain_type(
 )
 
 print(qa.invoke(query))
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/ask', methods=['POST'])
+def ask():
+    query = request.form['query']
+    print(f"Received query: {query}")  # Debugging line
+    response_with_knowledge = qa.invoke(query)
+    print(f"Response: {response_with_knowledge}")  # Debugging line
+    return jsonify({'response': response_with_knowledge})
+
+if __name__ == '__main__':
+    app.run(debug=True)

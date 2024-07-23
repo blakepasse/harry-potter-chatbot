@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA System</title>
+</head>
+<body>
+    <h1>Ask a Question</h1>
+    <form id="questionForm">
+        <label for="query">Your Question:</label>
+        <input type="text" id="query" name="query" required>
+        <button type="submit">Ask</button>
+    </form>
+    <h2>Answer:</h2>
+    <p id="answer"></p>
+
+    <script>
+        document.getElementById('questionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var query = document.getElementById('query').value;
+
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'query=' + encodeURIComponent(query)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('answer').innerText = data.response.result;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
+
