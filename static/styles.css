@@ -135,6 +135,7 @@ input[type="text"] {
     padding: 0 10px;
     box-sizing: border-box;
     position: absolute;
+    font-weight: bold;
     bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
