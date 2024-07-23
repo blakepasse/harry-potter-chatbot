@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QA System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Ask a Question</h1>
     <form id="questionForm">
-        <label for="query">Your Question:</label>
-        <input type="text" id="query" name="query" required>
-        <button type="submit">Ask</button>
+        <input type="text" id="query" name="query" placeholder="Ask a question..." required>
+        <button class="button-86" type="submit">Ask</button>
     </form>
-    <h2>Answer:</h2>
     <p id="answer"></p>
 
     <script>
@@ -38,4 +36,3 @@
     </script>
 </body>
 </html>
-
