@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #fffad8; /* Background color */
-    color: #46362a; /* Text color */
+    background-color: #bed9d6; /* Background color */
+    color: #83b0ae; /* Text color */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,7 +25,7 @@ input[type="text"] {
     font-size: 1.2em;
     margin-right: 10px; /* Space between input and button */
     border-radius: 20px; /* Rounded corners */
-    border: 1px solid #ffd08d;
+    border: 2px solid #83b0ae;
     box-sizing: border-box;
 }
 
@@ -99,6 +99,6 @@ input[type="text"] {
 #answer {
     text-align: center;
     margin-top: 20px;
-    font-size: 1.5em;
-    color: #46362a;
+    font-size: 1em;
+    color: #83b0ae;
 }
