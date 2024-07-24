@@ -15,7 +15,7 @@ papi = os.getenv("PINECONE_API_KEY")
 os.environ['OPENAI_API_KEY'] = oapi
 os.environ['PINECONE_API_KEY'] = papi
 
-loader = TextLoader('/Users/bpasse/Desktop/virtual-tests/project/converted/extracted_text.txt')
+loader = TextLoader('/Users/bpasse/Desktop/virtual-tests/project/converted/Harry_Potter_all_char_separated.txt')
 
 docs = loader.load()
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
