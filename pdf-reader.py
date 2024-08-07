@@ -22,10 +22,10 @@ os.environ['PINECONE_API_KEY'] = papi
 # split_docs = text_splitter.split_documents(docs)
 
 # split_docs_strings = [doc.page_content for doc in split_docs]
-split_docs_strings = "hi"
+split_docs_strings = ["hi"]
 
 embedding = OpenAIEmbeddings(
-    model = "text-embedding-3-small",
+    model="text-embedding-3-small",
 )
 
 index_name = "vid-chatbot"
@@ -66,9 +66,23 @@ def home():
 def ask():
     query = request.form['query']
     print(f"Received query: {query}")  # Debugging line
+    
+    # Retrieve the most similar document along with its embedding
+    similar_docs = vectorstore.similarity_search(query)
+    if similar_docs:
+        relevant_doc = similar_docs[0]
+        context = relevant_doc.page_content
+    else:
+        context = "No relevant document found."
+    
+    # Use the context as part of the input to the LLM
     response_with_knowledge = qa.invoke(query)
     print(f"Response: {response_with_knowledge}")  # Debugging line
-    return jsonify({'response': response_with_knowledge})
+
+    return jsonify({
+        'response': response_with_knowledge['result'],
+        'context': context
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)

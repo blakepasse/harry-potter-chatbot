@@ -52,7 +52,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('answer').innerText = data.response.result;
+                var responseText = data.response + "<br><br><strong>Context:</strong> " + data.context;
+                document.getElementById('answer').innerHTML = responseText;
             })
             .catch((error) => {
                 console.error('Error:', error);
