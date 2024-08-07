@@ -32,6 +32,9 @@
     </svg>
 
     <p id="answer"></p>
+    <div id="context-container" style="display: none;">
+        <p id="context"></p>
+    </div>
 
     <form id="questionForm">
         <input type="text" id="query" name="query" placeholder="Ask a question..." required>
@@ -52,8 +55,13 @@
             })
             .then(response => response.json())
             .then(data => {
-                var responseText = data.response + "<br><br><strong>Context:</strong> " + data.context;
-                document.getElementById('answer').innerHTML = responseText;
+                document.getElementById('answer').innerHTML = data.response;
+                if (data.context) {
+                    document.getElementById('context').innerHTML = data.context;
+                    document.getElementById('context-container').style.display = 'block';
+                } else {
+                    document.getElementById('context-container').style.display = 'none';
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);
