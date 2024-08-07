@@ -140,3 +140,20 @@ input[type="text"] {
     left: 50%;
     transform: translateX(-50%);
 }
+
+/* CSS for the Design button */
+.design-button {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 10px 20px;
+    background-color: #83b0ae;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.design-button:hover {
+    background-color: #28282d;
+}
