@@ -7,6 +7,7 @@ import os
 import glob
 from dotenv import load_dotenv
 from flask import Flask, request, render_template, jsonify
+
 app = Flask(__name__)
 
 load_dotenv()
@@ -83,6 +84,10 @@ def ask():
         'response': response_with_knowledge['result'],
         'context': context
     })
+
+@app.route('/diagram')
+def diagram():
+    return render_template('display_image.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

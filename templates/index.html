@@ -8,7 +8,7 @@
     <link rel="icon" href="{{ url_for('static', filename='favicon-32x32.png') }}" type="image/png">
 </head>
 <body>
-    <button class="design-button" onclick="window.location.href='/design'">Design</button>
+    <button class="design-button" onclick="window.location.href='/diagram'">Design</button>
     <svg viewbox="0 0 100 20">
         <defs>
             <linearGradient id="gradient">
@@ -31,7 +31,9 @@
         <text text-anchor="middle" x="50" y="15" font-size="17" fill="url(#wave)"  fill-opacity="1">CroixAI</text>
     </svg>
 
-    <p id="answer"></p>
+    <div id="answer-container">
+        <p id="answer"></p>
+    </div>
     <div id="context-container" style="display: none;">
         <p id="context"></p>
     </div>
@@ -60,7 +62,8 @@
                     document.getElementById('context').innerHTML = data.context;
                     document.getElementById('context-container').style.display = 'block';
                 } else {
-                    document.getElementById('context-container').style.display = 'none';
+                    document.getElementById('context').innerHTML = 'No relevant context';
+                    document.getElementById('context-container').style.display = 'block';
                 }
             })
             .catch((error) => {

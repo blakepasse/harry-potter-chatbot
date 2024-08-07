@@ -177,3 +177,36 @@ input[type="text"] {
 .design-button:hover {
     background-color: #28282d;
 }
+
+/* Additional CSS for display_image.html */
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid black; /* Add this line for a black border */
+    border-radius: 20px;
+}
+
+/* The same as the design button */
+.back-button {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 10px 20px;
+    background-color: #83b0ae;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.back-button:hover {
+    background-color: #28282d;
+}
