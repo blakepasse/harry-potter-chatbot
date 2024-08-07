@@ -15,13 +15,14 @@ papi = os.getenv("PINECONE_API_KEY")
 os.environ['OPENAI_API_KEY'] = oapi
 os.environ['PINECONE_API_KEY'] = papi
 
-loader = TextLoader('/Users/bpasse/Desktop/virtual-tests/project/converted/Harry_Potter_all_char_separated.txt')
+# loader = TextLoader('/Users/bpasse/Desktop/virtual-tests/project/converted/Harry_Potter_all_char_separated.txt')
 
-docs = loader.load()
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
-split_docs = text_splitter.split_documents(docs)
+# docs = loader.load()
+# text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+# split_docs = text_splitter.split_documents(docs)
 
-split_docs_strings = [doc.page_content for doc in split_docs]
+# split_docs_strings = [doc.page_content for doc in split_docs]
+split_docs_strings = "hi"
 
 embedding = OpenAIEmbeddings(
     model = "text-embedding-3-small",
