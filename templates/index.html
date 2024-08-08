@@ -6,9 +6,17 @@
     <title>CroixAI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon-32x32.png') }}" type="image/png">
+    <style>
+        #context-container {
+            margin-top: 50px; /* Move the context container down by 50px */
+        }
+    </style>
 </head>
 <body>
     <button class="design-button" onclick="window.location.href='/diagram'">Design</button>
+    <div id="context-container">
+        <!-- Updated to handle multiple contexts -->
+    </div>
     <svg viewbox="0 0 100 20">
         <defs>
             <linearGradient id="gradient">
@@ -38,10 +46,6 @@
             <div class="loader" id="loader" style="display: none;"></div>
         </button>
     </form>
-
-    <div id="context-container">
-        <!-- Updated to handle multiple contexts -->
-    </div>
 
     <div id="response-container" style="display: none;">
         <p id="response"></p>
