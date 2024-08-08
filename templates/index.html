@@ -31,11 +31,11 @@
         <text text-anchor="middle" x="50" y="15" font-size="17" fill="url(#wave)" fill-opacity="1">CroixAI</text>
     </svg>
 
-    <div id="answer-container">
-        <p id="answer"></p>
-    </div>
-    <div id="context-container" style="display: none;">
+    <div id="context-container">
         <p id="context"></p>
+    </div>
+    <div id="response-container" style="display: none;">
+        <p id="response"></p>
     </div>
 
     <form id="questionForm">
@@ -52,8 +52,8 @@
             var query = document.getElementById('query').value;
 
             document.getElementById('loader').style.display = 'grid'; // Show loader
-            document.getElementById('answer').innerHTML = ''; // Clear previous answer
-            document.getElementById('context-container').style.display = 'none'; // Hide context container
+            document.getElementById('response').innerHTML = ''; // Clear previous answer
+            document.getElementById('response-container').style.display = 'none'; // Hide context container
 
             fetch('/ask', {
                 method: 'POST',
@@ -65,14 +65,10 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById('loader').style.display = 'none'; // Hide loader
-                document.getElementById('answer').innerHTML = data.response;
-                if (data.context) {
-                    document.getElementById('context').innerHTML = data.context;
-                    document.getElementById('context-container').style.display = 'block';
-                } else {
-                    document.getElementById('context').innerHTML = 'No relevant context';
-                    document.getElementById('context-container').style.display = 'block';
-                }
+                document.getElementById('response').innerHTML = data.response;
+                document.getElementById('response-container').style.display = 'block';
+
+                document.getElementById('context').innerHTML = data.context;
             })
             .catch((error) => {
                 document.getElementById('loader').style.display = 'none'; // Hide loader

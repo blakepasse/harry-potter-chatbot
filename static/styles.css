@@ -124,7 +124,7 @@ input[type="text"] {
     transform: translate(0, 5%);
 }
 
-#answer {
+#context {
     text-align: center;
     top: 100px;
     font-size: 1em;
@@ -139,7 +139,7 @@ input[type="text"] {
     transform: translateX(-50%);
 }
 
-#context-container {
+#response-container {
     width: 100%;
     max-width: 600px;
     padding: 10px;
@@ -157,7 +157,7 @@ input[type="text"] {
     transform: translateX(-50%);
 }
 
-#context {
+#response {
     margin: 0;
 }
 
