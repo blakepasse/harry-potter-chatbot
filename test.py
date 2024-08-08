@@ -1,48 +1,53 @@
-import magic
+import os
 from langchain_pinecone import PineconeVectorStore
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_community.document_loaders import TextLoader, DirectoryLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-import os
-import glob
 from dotenv import load_dotenv
 from flask import Flask, request, render_template, jsonify
+from pinecone import Pinecone, ServerlessSpec
+import time
 
+# Initialize Flask app
 app = Flask(__name__)
 
+# Load environment variables
 load_dotenv()
 oapi = os.getenv("OPENAI_API_KEY")
 papi = os.getenv("PINECONE_API_KEY")
 os.environ['OPENAI_API_KEY'] = oapi
 os.environ['PINECONE_API_KEY'] = papi
 
-loader = TextLoader('/Users/bpasse/Desktop/virtual-tests/project/converted/Harry_Potter_all_char_separated.txt')
+# Initialize Pinecone using the Pinecone class
+pc = Pinecone(api_key=papi)
 
-docs = loader.load()
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
-split_docs = text_splitter.split_documents(docs)
+# Define the index name and namespace
+index_name = "rag-project"
+namespace = "harry_potter"
 
-split_docs_strings = [doc.page_content for doc in split_docs]
+# Ensure the index exists
+existing_indexes = [index_info["name"] for index_info in pc.list_indexes()]
+if index_name not in existing_indexes:
+    pc.create_index(
+        name=index_name,
+        dimension=1536,
+        metric='cosine',
+        spec=ServerlessSpec(cloud='aws', region='us-west-2')
+    )
+    while not pc.describe_index(index_name).status["ready"]:
+        time.sleep(1)
 
+# Create the embedding model
 embedding = OpenAIEmbeddings(
     model="text-embedding-3-small",
 )
 
-index_name = "rag-project"
-namespace = "harry_potter"
-vectorstore = PineconeVectorStore.from_texts(
-    texts=split_docs_strings,
+# Create the vector store instance with the existing index and namespace
+vectorstore = PineconeVectorStore(
     index_name=index_name,
     embedding=embedding,
     namespace=namespace,
 )
 
-query = "People who are well rested do better on what?"
-
-similar_docs = vectorstore.similarity_search(query)
-
-print(similar_docs[0])
-
+# Define the LLM
 llm = ChatOpenAI(
     model="gpt-4o",
     temperature=0
@@ -50,13 +55,12 @@ llm = ChatOpenAI(
 
 from langchain.chains import RetrievalQA
 
+# Set up the QA chain
 qa = RetrievalQA.from_chain_type(
     llm=llm,
     chain_type="stuff",
     retriever=vectorstore.as_retriever()
 )
-
-print(qa.invoke(query))
 
 @app.route('/')
 def home():
@@ -68,10 +72,18 @@ def ask():
     print(f"Received query: {query}")  # Debugging line
     
     # Retrieve the top 3 most similar documents along with their scores
-    similar_docs = vectorstore.similarity_search_with_score(query, k=3)
+    similar_docs = vectorstore.similarity_search_with_score(query, k=5)
+    
+    # Filter out contexts with a similarity score below 0.3 and remove duplicates
+    unique_docs = []
+    seen_contents = set()
+    for doc, score in similar_docs:
+        if doc.page_content not in seen_contents:
+            unique_docs.append((doc, score))
+            seen_contents.add(doc.page_content)
     
     contexts = []
-    for doc, score in similar_docs:
+    for doc, score in unique_docs:
         contexts.append({
             'context': doc.page_content,
             'score': score
@@ -83,14 +95,14 @@ def ask():
         print(f"Response: {response_with_knowledge}")  # Debugging line
         response_text = response_with_knowledge['result']
     else:
-        response_text = "No relevant document found."
+        # Handle case where no relevant context is found
+        response_text = llm.generate(f"{query} (Note: No relevant context was found in the database)").choices[0].text.strip()
+        print(f"No relevant context found. Generated response: {response_text}")
     
     return jsonify({
         'response': response_text,
         'contexts': contexts  # Return the list of contexts with scores
     })
-
-
 
 @app.route('/diagram')
 def diagram():
@@ -98,3 +110,4 @@ def diagram():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
