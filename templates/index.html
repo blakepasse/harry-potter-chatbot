@@ -17,7 +17,7 @@
     <div id="context-container">
         <!-- Updated to handle multiple contexts -->
     </div>
-    <svg viewbox="0 0 100 20">
+    <svg id="croixai-svg" viewbox="0 0 100 20">
         <defs>
             <linearGradient id="gradient">
                 <stop color="#000"/>
@@ -72,6 +72,7 @@
                 document.getElementById('loader').style.display = 'none'; // Hide loader
                 document.getElementById('response').innerHTML = data.response;
                 document.getElementById('response-container').style.display = 'block';
+                document.getElementById('croixai-svg').style.display = 'none';
 
                 var contextContainer = document.getElementById('context-container');
                 contextContainer.innerHTML = ''; // Clear previous contexts

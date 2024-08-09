@@ -6,8 +6,8 @@ body, html {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start; /* Align content at the top */
+    align-items: center; /* Center horizontally */
 }
 
 body {
@@ -141,8 +141,12 @@ input[type="text"] {
 
 #context-container {
     margin-top: 50px;
-    margin-left: 20px;
-    margin-right: 20px;
+    width: 100%; /* Make it span the full width */
+    max-width: 100%; /* Ensure it doesn't shrink */
+    padding: 10px;
+    text-align: left; /* Align text to the left */
+    position: relative; /* Maintain relative position */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
 }
 
 #response-container {
