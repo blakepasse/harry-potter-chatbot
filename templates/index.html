@@ -22,13 +22,14 @@
     </style>
 </head>
 <body>
-    {% if current_user.is_authenticated %}
-        <button onclick="window.location.href='{{ url_for('dashboard') }}'">Dashboard</button>
-        <button onclick="window.location.href='{{ url_for('logout') }}'">Logout</button>
-    {% else %}
-        <button onclick="window.location.href='{{ url_for('login') }}'">Login</button>
-        <button onclick="window.location.href='{{ url_for('register') }}'">Register</button>
-    {% endif %}
+    <div class="top-right-buttons">
+        {% if current_user.is_authenticated %}
+            <button class="auth-button" onclick="window.location.href='{{ url_for('logout') }}'">Logout</button>
+        {% else %}
+            <button class="auth-button" onclick="window.location.href='{{ url_for('login') }}'">Login</button>
+            <button class="auth-button" onclick="window.location.href='{{ url_for('register') }}'">Register</button>
+        {% endif %}
+    </div>
     
     <button class="design-button" onclick="window.location.href='/diagram'">Design</button>
     <div id="context-container">

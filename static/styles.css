@@ -184,7 +184,9 @@ input[type="text"] {
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s ease;
 }
+
 .design-button:hover {
     background-color: #28282d;
 }
@@ -324,4 +326,29 @@ input[type="text"] {
     margin-top: 5px;
     font-size: 14px;
     color: #666;
+}
+
+/* Add this to your existing styles */
+
+.top-right-buttons {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 10px;
+}
+
+.auth-button {
+    padding: 10px 20px;
+    background-color: #83b0ae;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+    background-color: #28282d;
 }
