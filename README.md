@@ -16,7 +16,7 @@ Features
 User Authentication: Users can log in to the system using a dedicated login page.
 Interactive Chat Interface: Once logged in, users can ask questions to the chatbot.
 Example 1: The user says "hello".
-The chatbot replies: "I am your helpful Harry Potter assistance".
+The chatbot replies: "I am your helpful Harry Potter assistant".
 
 Contextual Responses: The chatbot provides rich and relevant information from the Harry Potter universe.
 Example 2: The user asks "What are the owls doing?"
