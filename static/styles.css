@@ -218,6 +218,7 @@ input[type="text"] {
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 .back-button:hover {
@@ -350,5 +351,79 @@ input[type="text"] {
 }
 
 .auth-button:hover {
+    background-color: #28282d;
+}
+
+/* Add these styles to your existing CSS file */
+
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.auth-container h2 {
+    color: #83b0ae;
+    margin-bottom: 20px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-form input {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #83b0ae;
+}
+
+.auth-button {
+    padding: 10px 20px;
+    background-color: #83b0ae;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+    background-color: #28282d;
+}
+
+.auth-link {
+    color: #83b0ae;
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* Update the existing back-button style */
+.back-button {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 10px 20px;
+    background-color: #83b0ae;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
     background-color: #28282d;
 }
