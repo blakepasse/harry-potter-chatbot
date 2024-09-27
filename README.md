@@ -2,7 +2,7 @@ Harry Potter Chatbot Web Application (RAG-Based)
 
 Overview
 
-This project is a Retrieval-Augmented Generation (RAG) based web application that serves as an interactive Harry Potter chatbot. The chatbot responds to user queries, provides contextual information from the Harry Potter universe, and offers a relevance ranking system to evaluate its answers. The system is designed to provide an immersive, accurate, and user-friendly experience.
+This project is a Retrieval-Augmented Generation (RAG) based web application that serves as an interactive Harry Potter chatbot. The chatbot responds to user queries, provides contextual information from the Harry Potter universe, and offers a relevance ranking system to evaluate its answers.
 
 Tools Utilized:
 Langchain: For efficient language processing and context management.
