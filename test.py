@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from flask import Flask, request, render_template, jsonify
 from pinecone import Pinecone, ServerlessSpec
 import time
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -62,6 +64,23 @@ qa = RetrievalQA.from_chain_type(
     retriever=vectorstore.as_retriever()
 )
 
+# Define a prompt template
+prompt_template = PromptTemplate(
+    input_variables=["query", "context"],
+    template="""You are a helpful Harry Potter assistant. Your task is to answer questions based on the provided context.
+    If the question is about who you are, respond with "I am your helpful Harry Potter assistant."
+    For all other questions, use the following context to formulate your answer:
+    
+    Context: {context}
+    
+    Question: {query}
+    
+    Answer:"""
+)
+
+# Create an LLMChain
+llm_chain = LLMChain(llm=llm, prompt=prompt_template)
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -91,12 +110,13 @@ def ask():
     
     # Use the most relevant context as part of the input to the LLM
     if contexts:
-        response_with_knowledge = qa.invoke(query)
+        context = contexts[0]['context']
+        response_with_knowledge = llm_chain.run(query=query, context=context)
         print(f"Response: {response_with_knowledge}")  # Debugging line
-        response_text = response_with_knowledge['result']
+        response_text = response_with_knowledge
     else:
         # Handle case where no relevant context is found
-        response_text = llm.generate(f"{query} (Note: No relevant context was found in the database)").choices[0].text.strip()
+        response_text = llm_chain.run(query=query, context="No relevant context was found in the database.")
         print(f"No relevant context found. Generated response: {response_text}")
     
     return jsonify({
