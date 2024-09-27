@@ -5,3 +5,4 @@ Tools Utilized:
 - Pinecone
 - OpenAI
 - Flask
+- SQL
