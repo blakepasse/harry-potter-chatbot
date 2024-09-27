@@ -121,8 +121,19 @@ def ask():
     
     return jsonify({
         'response': response_text,
-        'contexts': contexts  # Return the list of contexts with scores
+        'contexts': contexts,
+        'id': str(time.time())  # Add a unique ID for each response
     })
+
+@app.route('/rank', methods=['POST'])
+def rank():
+    data = request.json
+    response_id = data['id']
+    ranking = data['ranking']
+    # Here you would typically store the ranking in a database
+    # For now, we'll just print it
+    print(f"Response {response_id} received ranking: {ranking}")
+    return jsonify({'status': 'success'})
 
 @app.route('/diagram')
 def diagram():
@@ -130,4 +141,3 @@ def diagram():
 
 if __name__ == '__main__':
     app.run(debug=True)
-

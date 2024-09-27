@@ -10,6 +10,15 @@
         #context-container {
             margin-top: 50px; /* Move the context container down by 50px */
         }
+        .ranking-container {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .ranking-button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -49,6 +58,14 @@
 
     <div id="response-container" style="display: none;">
         <p id="response"></p>
+        <div class="ranking-container">
+            <p>How relevant was this response?</p>
+            <button class="ranking-button" data-rank="1">1 (Not Relevant)</button>
+            <button class="ranking-button" data-rank="2">2</button>
+            <button class="ranking-button" data-rank="3">3</button>
+            <button class="ranking-button" data-rank="4">4</button>
+            <button class="ranking-button" data-rank="5">5 (Very Relevant)</button>
+        </div>
     </div>
 
     <script>
@@ -88,10 +105,49 @@
                     contextElement.textContent = contextText;
                     contextContainer.appendChild(contextElement);
                 });
+
+                // Store the response ID
+                document.getElementById('response-container').dataset.responseId = data.id;
+
+                // Reset ranking buttons
+                document.querySelectorAll('.ranking-button').forEach(button => {
+                    button.disabled = false;
+                    button.style.backgroundColor = '';
+                });
             })
             .catch((error) => {
                 document.getElementById('loader').style.display = 'none'; // Hide loader
                 console.error('Error:', error);
+            });
+        });
+
+        // Add event listeners for ranking buttons
+        document.querySelectorAll('.ranking-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const rank = this.dataset.rank;
+                const responseId = document.getElementById('response-container').dataset.responseId;
+
+                fetch('/rank', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({id: responseId, ranking: rank})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Disable all buttons and highlight the selected one
+                        document.querySelectorAll('.ranking-button').forEach(btn => {
+                            btn.disabled = true;
+                            btn.style.backgroundColor = '';
+                        });
+                        this.style.backgroundColor = '#83b0ae';
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
             });
         });
     </script>
