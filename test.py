@@ -10,6 +10,7 @@ import time
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from werkzeug.security import generate_password_hash, check_password_hash
+from collections import OrderedDict
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -117,12 +118,18 @@ def ask():
     # Retrieve the top 5 most similar documents along with their scores
     similar_docs = vectorstore.similarity_search_with_score(query, k=5)
     
-    contexts = []
+    # Use OrderedDict to maintain order and ensure uniqueness
+    unique_contexts = OrderedDict()
     for doc, score in similar_docs:
-        contexts.append({
-            'context': doc.page_content,
-            'score': score
-        })
+        # Use the context as the key to ensure uniqueness
+        if doc.page_content not in unique_contexts:
+            unique_contexts[doc.page_content] = {
+                'context': doc.page_content,
+                'score': score
+            }
+    
+    # Convert the OrderedDict values back to a list
+    contexts = list(unique_contexts.values())
     
     # Use the most relevant context as part of the input to the LLM
     if contexts:

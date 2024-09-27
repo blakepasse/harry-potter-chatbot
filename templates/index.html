@@ -31,7 +31,6 @@
         {% endif %}
     </div>
     
-    <button class="design-button" onclick="window.location.href='/diagram'">Design</button>
     <div id="context-container">
         <!-- Updated to handle multiple contexts -->
     </div>
@@ -113,14 +112,21 @@
 
                 console.log('Raw contexts:', data.contexts);
 
-                const filteredContexts = data.contexts.filter(item => item.score > 0.3).slice(0, 5);
+                // Update this line to filter contexts with a score of 0.4 or higher
+                const filteredContexts = data.contexts.filter(item => item.score >= 0.4).slice(0, 5);
 
-                filteredContexts.forEach((item, index) => {
-                    var contextText = 'Context ' + (index + 1) + ': ' + item.context + ' (Similarity Score: ' + item.score.toFixed(3) + ')';
-                    var contextElement = document.createElement('p');
-                    contextElement.textContent = contextText;
-                    contextContainer.appendChild(contextElement);
-                });
+                if (filteredContexts.length > 0) {
+                    filteredContexts.forEach((item, index) => {
+                        var contextText = 'Context ' + (index + 1) + ': ' + item.context + ' (Similarity Score: ' + item.score.toFixed(3) + ')';
+                        var contextElement = document.createElement('p');
+                        contextElement.textContent = contextText;
+                        contextContainer.appendChild(contextElement);
+                    });
+                } else {
+                    var noContextElement = document.createElement('p');
+                    noContextElement.textContent = 'No relevant context found.';
+                    contextContainer.appendChild(noContextElement);
+                }
 
                 document.getElementById('response-container').dataset.responseId = data.id;
 
