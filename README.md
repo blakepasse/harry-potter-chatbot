@@ -6,7 +6,7 @@ This project is a Retrieval-Augmented Generation (RAG) based web application tha
 
 Tools Utilized:
 Langchain: For efficient language processing and context management.
-Pinecone: To store and retrieve embeddings for contextual responses.
+Pinecone: To store and retrieve vector embeddings for contextual responses.
 OpenAI: Provides the language model for generating responses.
 Flask: Used as the web framework to build the application.
 SQL: Manages user authentication and stores feedback data.
@@ -18,7 +18,7 @@ Interactive Chat Interface: Once logged in, users can ask questions to the chatb
 Example 1: The user says "hello".
 The chatbot replies: "I am your helpful Harry Potter assistant".
 
-Contextual Responses: The chatbot provides rich and relevant information from the Harry Potter universe.
+Contextual Responses: The chatbot provides rich and relevant information from Harry Potter.
 Example 2: The user asks "What are the owls doing?"
 The chatbot responds with a detailed and accurate answer, explaining the role of owls and providing related context.
 
