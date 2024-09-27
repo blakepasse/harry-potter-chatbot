@@ -723,6 +723,36 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-login"
+version = "0.6.3"
+description = "User authentication and session management for Flask."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "Flask-Login-0.6.3.tar.gz", hash = "sha256:5e23d14a607ef12806c699590b89d0f0e0d67baeec599d75947bf9c147330333"},
+    {file = "Flask_Login-0.6.3-py3-none-any.whl", hash = "sha256:849b25b82a436bf830a054e74214074af59097171562ab10bfa999e6b78aae5d"},
+]
+
+[package.dependencies]
+Flask = ">=1.0.4"
+Werkzeug = ">=1.0.1"
+
+[[package]]
+name = "flask-sqlalchemy"
+version = "3.1.1"
+description = "Add SQLAlchemy support to your Flask application."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "flask_sqlalchemy-3.1.1-py3-none-any.whl", hash = "sha256:4ba4be7f419dc72f4efd8802d69974803c37259dd42f3913b0dcf75c9447e0a0"},
+    {file = "flask_sqlalchemy-3.1.1.tar.gz", hash = "sha256:e4b68bb881802dda1a7d878b2fc84c06d1ee57fb40b874d3dc97dabfa36b8312"},
+]
+
+[package.dependencies]
+flask = ">=2.2.5"
+sqlalchemy = ">=2.0.16"
+
+[[package]]
 name = "flatbuffers"
 version = "24.3.25"
 description = "The FlatBuffers serialization format for Python"
@@ -4904,4 +4934,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.13"
-content-hash = "66fc689951c83b854d897cb4fbda5631591884f0e68e883ac0c9241b033c3d78"
+content-hash = "13d6d3946f869b0ffba3526d0fa840f07397241ae97ad1ec055d27a255bed7b9"

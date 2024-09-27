@@ -22,6 +22,14 @@
     </style>
 </head>
 <body>
+    {% if current_user.is_authenticated %}
+        <button onclick="window.location.href='{{ url_for('dashboard') }}'">Dashboard</button>
+        <button onclick="window.location.href='{{ url_for('logout') }}'">Logout</button>
+    {% else %}
+        <button onclick="window.location.href='{{ url_for('login') }}'">Login</button>
+        <button onclick="window.location.href='{{ url_for('register') }}'">Register</button>
+    {% endif %}
+    
     <button class="design-button" onclick="window.location.href='/diagram'">Design</button>
     <div id="context-container">
         <!-- Updated to handle multiple contexts -->
@@ -58,6 +66,7 @@
 
     <div id="response-container" style="display: none;">
         <p id="response"></p>
+        {% if current_user.is_authenticated %}
         <div class="ranking-container">
             <p>How relevant was this response?</p>
             <div class="ranking-buttons">
@@ -72,6 +81,7 @@
                 <span>Very Relevant</span>
             </p>
         </div>
+        {% endif %}
     </div>
 
     <script>
@@ -79,9 +89,9 @@
             event.preventDefault();
             var query = document.getElementById('query').value;
 
-            document.getElementById('loader').style.display = 'grid'; // Show loader
-            document.getElementById('response').innerHTML = ''; // Clear previous answer
-            document.getElementById('response-container').style.display = 'none'; // Hide context container
+            document.getElementById('loader').style.display = 'grid';
+            document.getElementById('response').innerHTML = '';
+            document.getElementById('response-container').style.display = 'none';
 
             fetch('/ask', {
                 method: 'POST',
@@ -92,17 +102,16 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('loader').style.display = 'none'; // Hide loader
+                document.getElementById('loader').style.display = 'none';
                 document.getElementById('response').innerHTML = data.response;
                 document.getElementById('response-container').style.display = 'block';
                 document.getElementById('croixai-svg').style.display = 'none';
 
                 var contextContainer = document.getElementById('context-container');
-                contextContainer.innerHTML = ''; // Clear previous contexts
+                contextContainer.innerHTML = '';
 
-                console.log('Raw contexts:', data.contexts); // Debugging line
+                console.log('Raw contexts:', data.contexts);
 
-                // Filter and limit contexts
                 const filteredContexts = data.contexts.filter(item => item.score > 0.3).slice(0, 5);
 
                 filteredContexts.forEach((item, index) => {
@@ -112,22 +121,22 @@
                     contextContainer.appendChild(contextElement);
                 });
 
-                // Store the response ID
                 document.getElementById('response-container').dataset.responseId = data.id;
 
-                // Reset ranking buttons
+                {% if current_user.is_authenticated %}
                 document.querySelectorAll('.ranking-button').forEach(button => {
                     button.disabled = false;
                     button.style.backgroundColor = '';
                 });
+                {% endif %}
             })
             .catch((error) => {
-                document.getElementById('loader').style.display = 'none'; // Hide loader
+                document.getElementById('loader').style.display = 'none';
                 console.error('Error:', error);
             });
         });
 
-        // Add event listeners for ranking buttons
+        {% if current_user.is_authenticated %}
         document.querySelectorAll('.ranking-button').forEach(button => {
             button.addEventListener('click', function() {
                 const rank = this.dataset.rank;
@@ -143,7 +152,6 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        // Disable all buttons and highlight the selected one
                         document.querySelectorAll('.ranking-button').forEach(btn => {
                             btn.disabled = true;
                             btn.style.backgroundColor = '';
@@ -156,6 +164,7 @@
                 });
             });
         });
+        {% endif %}
     </script>
 </body>
 </html>
